@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Entretien Reso">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="https://img.icons8.com/emoji/96/wrench-emoji.png">
 <title>Fiche d'Entretien</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -818,7 +823,7 @@ setTimeout(()=>{document.getElementById('loadingOverlay').style.display='none';}
 
 <!-- ========== SCRIPT PRINCIPAL ========== -->
 <script>
-const CONTROLES_ITEMS=['Huile','Eau','Liquide de frein','Lave glace','État des pneus','Pression des roues','Éclairage','Direction assistée'];
+const CONTROLES_ITEMS=['Huile','Eau','Liquide de frein','Lave glace','Essuie glace','État des pneus','Pression des roues','Éclairage','Direction assistée','Kit de sécurité'];
 const propreteState={interieur:null,exterieur:null};
 window._propreteState=propreteState;
 let immatDebounceTimer=null;
