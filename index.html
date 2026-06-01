@@ -126,7 +126,17 @@
   .filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
 
   /* HISTORIQUE */
+  .historique-month{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:background .25s,border-color .25s}
+  .historique-month summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px;cursor:pointer;background:var(--surface2);border-bottom:1px solid var(--border);transition:background .25s,border-color .25s}
+  .historique-month summary::-webkit-details-marker{display:none}
+  .historique-month-title{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--text);letter-spacing:.2px}
+  .historique-month-title::before{content:'+';width:22px;height:22px;border-radius:6px;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:14px;font-weight:600}
+  .historique-month[open] .historique-month-title::before{content:'-'}
+  .historique-month-count{font-size:12px;font-weight:600;color:var(--text2);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:3px 9px;white-space:nowrap}
+  .historique-month-body{padding:10px}
+  .historique-month-empty{padding:12px 6px;color:var(--text3);font-size:13px;text-align:center}
   .historique-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s}
+  .historique-month-body .historique-item:last-child{margin-bottom:0}
   .historique-item:active{opacity:.8}
   .historique-immat{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--accent);background:var(--accent-light);display:inline-block;padding:3px 10px;border-radius:6px;margin-bottom:6px;letter-spacing:1.5px}
   .historique-meta{font-size:13px;color:var(--text2);display:flex;gap:12px;flex-wrap:wrap}
@@ -607,6 +617,33 @@ window.clearSearch = function() {
 };
 function highlightText(text,q) { if(!q) return text; const e=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); return text.replace(new RegExp(`(${e})`,'gi'),'<span class="highlight">$1</span>'); }
 
+const HISTORIQUE_MONTHS = [
+  { key:'mai', label:'Mai', month:4 },
+  { key:'juin', label:'Juin', month:5 },
+  { key:'juillet', label:'Juillet', month:6 },
+  { key:'aout', label:'Ao&ucirc;t', month:7 },
+  { key:'septembre', label:'Septembre', month:8 },
+  { key:'octobre', label:'Octobre', month:9 },
+  { key:'novembre', label:'Novembre', month:10 },
+  { key:'decembre', label:'D&eacute;cembre', month:11 },
+  { key:'janvier', label:'Janvier', month:0 },
+  { key:'fevrier', label:'F&eacute;vrier', month:1 },
+  { key:'mars', label:'Mars', month:2 },
+  { key:'avril', label:'Avril', month:3 },
+];
+
+function getHistoriqueMonthKeyFromDate(dateStr) {
+  if (!dateStr) return 'mai';
+  const parts = dateStr.split('-');
+  const month = parseInt(parts[1], 10) - 1;
+  const match = HISTORIQUE_MONTHS.find(m => m.month === month);
+  return match ? match.key : 'mai';
+}
+
+function getFicheHistoriqueMonthKey(fiche) {
+  return fiche.moisDossier || 'mai';
+}
+
 function renderHistorique(fiches) {
   const container = document.getElementById('historique-list');
   let filtered = fiches;
@@ -614,7 +651,7 @@ function renderHistorique(fiches) {
   else if (currentFilter==='ce-mois') { const n=new Date(); filtered=filtered.filter(f=>{if(!f.date)return false;const d=new Date(f.date);return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}); }
   if (currentSearch) filtered=filtered.filter(f=>f.immat&&f.immat.replace(/[-\s]/g,'').includes(currentSearch.replace(/[-\s]/g,'')));
   if (!filtered.length) { container.innerHTML=currentSearch?`<div class="no-result">Aucun véhicule pour "<strong>${currentSearch}</strong>"</div>`:`<div class="empty-state"><div class="empty-state-icon">🔍</div><h3>Aucune fiche</h3><p>Aucune fiche pour ce filtre.</p></div>`; return; }
-  container.innerHTML = filtered.map(f => {
+  const itemHtml = (f) => {
     const nA=Object.values(f.controles||{}).filter(v=>v==='nok'||v==='warn').length;
     const ct=ctStatus(f.ctProchain);
     const ctB=ct?(ct.type==='expired'?`<span class="badge badge-ct">🚨 CT expiré</span>`:ct.type==='urgent'?`<span class="badge badge-warn">⚠ CT ${ct.days}j</span>`:`<span class="badge" style="background:var(--surface2);color:var(--text2)">📅 CT ${ct.days}j</span>`):'';
@@ -624,6 +661,22 @@ function renderHistorique(fiches) {
       <div class="historique-meta"><span>📅 ${formatDate(f.date)}</span><span>🛣 ${f.km?.toLocaleString('fr-FR')} km</span>${f.controleur?`<span>👤 ${f.controleur}</span>`:''}</div>
       <div style="margin-top:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${aB}${ctB}<span style="margin-left:auto;font-size:12px;color:var(--text3);">Voir ›</span></div>
     </div>`;
+  };
+  const byMonth = HISTORIQUE_MONTHS.reduce((acc,m)=>{acc[m.key]=[];return acc;},{});
+  filtered.forEach(f => {
+    const key = getFicheHistoriqueMonthKey(f);
+    if (byMonth[key]) byMonth[key].push(f);
+    else byMonth.mai.push(f);
+  });
+  container.innerHTML = HISTORIQUE_MONTHS.map(m => {
+    const items = byMonth[m.key];
+    const count = items.length;
+    const body = count ? items.map(itemHtml).join('') : '<div class="historique-month-empty">Aucune fiche</div>';
+    const openAttr = count ? ' open' : '';
+    return `<details class="historique-month"${openAttr}>
+      <summary><span class="historique-month-title">${m.label}</span><span class="historique-month-count">${count} fiche${count>1?'s':''}</span></summary>
+      <div class="historique-month-body">${body}</div>
+    </details>`;
   }).join('');
 }
 
@@ -774,10 +827,12 @@ window.enregistrerFiche = async function() {
   const btn=document.getElementById('submitBtn');
   btn.disabled=true;
   const isEditing = !!window._editingId;
+  const existingFiche = isEditing ? allFiches.find(f=>f.id===window._editingId) : null;
   btn.textContent = isEditing ? 'Mise à jour...' : 'Enregistrement...';
 
   const ficheData = {
     immat, km:parseInt(km), date,
+    moisDossier: existingFiche?.moisDossier || (isEditing ? 'mai' : getHistoriqueMonthKeyFromDate(date)),
     controleur:document.getElementById('controleur').value.trim(),
     ctDate:document.getElementById('ct-date').value||null,
     ctProchain:document.getElementById('ct-prochain').value||null,
