@@ -109,7 +109,7 @@
   .stat-label{font-size:11px;color:var(--text3);margin-top:2px}
   .info-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:background .25s,border-color .25s}
   .info-table{width:100%;border-collapse:collapse;table-layout:fixed}
-  .info-table th{background:var(--surface2);color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:10px 8px;border-bottom:1px solid var(--border);white-space:nowrap;border-right:1px solid var(--border2)}
+  .info-table th{background:var(--surface2);color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:10px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border2);white-space:normal;word-break:break-word;line-height:1.3}
   .info-table td{padding:8px;border-bottom:1px solid var(--border);vertical-align:middle;border-right:1px solid var(--border)}
   .info-table th:last-child,.info-table td:last-child{border-right:none}
   .info-table tr:last-child td{border-bottom:0}
@@ -432,6 +432,7 @@
             <col class="col-emplacement">
             <col class="col-carte">
             <col class="col-carte">
+            <col class="col-carte">
             <col class="col-date">
             <col class="col-btn">
           </colgroup>
@@ -439,15 +440,16 @@
             <tr>
               <th>Immatriculation</th>
               <th>Loueur/Propriétaire</th>
-              <th>Emplacement Véhicules</th>
+              <th>Emplacement Véhicule</th>
               <th>Carte Handicap</th>
               <th>Carte Stationnement</th>
+              <th>Assurance</th>
               <th>Dernière fiche</th>
               <th></th>
             </tr>
           </thead>
           <tbody id="information-list">
-            <tr><td colspan="7" class="historique-month-empty">Chargement...</td></tr>
+            <tr><td colspan="8" class="historique-month-empty">Chargement...</td></tr>
           </tbody>
         </table>
       </div>
@@ -546,19 +548,20 @@ async function saveVehicleData(immat) {
   if (!immat || !db) return;
   const key = immat.replace(/[^A-Z0-9]/g,'');
   const fn = window._firestoreFns;
-  // Récupérer les photos existantes
-  let existingPhotos = [];
+  // Récupérer les données existantes pour ne pas les écraser
+  let existingData = {};
   try {
     const snap = await fn.getDoc(fn.doc(db, 'vehicules', key));
-    if (snap.exists()) existingPhotos = snap.data().photos || [];
+    if (snap.exists()) existingData = snap.data();
   } catch(e) {}
+  // merge:true pour ne jamais écraser loueur, emplacement, cartes, assurance etc.
   await fn.setDoc(fn.doc(db, 'vehicules', key), {
     immat,
-    etatGeneral: document.getElementById('etatGeneral').value || null,
-    notesEtat: document.getElementById('notesEtat').value || null,
-    photos: existingPhotos,
+    etatGeneral: document.getElementById('etatGeneral')?.value || null,
+    notesEtat: document.getElementById('notesEtat')?.value || null,
+    photos: existingData.photos || [],
     updatedAt: fn.serverTimestamp()
-  });
+  }, { merge: true });
 }
 
 /* ========== PHOTOS ========== */
@@ -694,12 +697,16 @@ function renderCTAlerts(fiches) {
       if (!info[field]) return;
       const d = new Date(info[field]); d.setHours(0,0,0,0);
       const diff = Math.round((d - now) / 86400000);
-      if (diff <= 30) {
-        const label = field === 'carteHandicapExp' ? '♿ Carte Handicap' : '🅿 Carte Stationnement';
-        const type = diff < 0 ? 'expired' : diff <= 7 ? 'urgent' : 'soon';
-        const msg = diff < 0 ? `Expirée depuis ${Math.abs(diff)}j` : `Expire dans ${diff}j`;
-        carteAlerts.push({ immat: info.immat || key, label, type, msg, date: info[field] });
-      }
+      // Carte Handicap : orange 120j, rouge 90j / Autres : orange 30j, rouge expiré
+      const isHandicap = field === 'carteHandicapExp';
+      const orangeSeuil = isHandicap ? 120 : 30;
+      const rougeSeuil = isHandicap ? 90 : 0;
+      const shouldAlert = diff < 0 || diff <= orangeSeuil;
+      if (!shouldAlert) return;
+      const labels = {carteHandicapExp:'♿ Carte Handicap', carteStationnementExp:'🅿 Carte Stationnement', assuranceExp:'🛡 Assurance'};
+      const type = diff < 0 ? 'expired' : diff <= rougeSeuil ? 'urgent' : 'soon';
+      const msg = diff < 0 ? `Expirée depuis ${Math.abs(diff)}j` : `Expire dans ${diff}j`;
+      carteAlerts.push({ immat: info.immat || key, label: labels[field], type, msg, date: info[field] });
     });
   });
 
@@ -871,8 +878,21 @@ async function renderInformationVoiture(fiches) {
     const info = vehicleInfoCache[key] || {};
     const chExp = info.carteHandicapExp || '';
     const csExp = info.carteStationnementExp || '';
+    const assurance = info.assurance || '';
     const today = new Date(); today.setHours(0,0,0,0);
-    const carteClass = (dateStr) => {
+
+    // Alertes Carte Handicap : orange à 4 mois, rouge à 3 mois
+    const carteHandicapClass = (dateStr) => {
+      if (!dateStr) return '';
+      const d = new Date(dateStr); d.setHours(0,0,0,0);
+      const diff = Math.round((d - today) / 86400000);
+      if (diff < 0) return 'style="border-color:var(--red);background:var(--red-bg)"';
+      if (diff <= 90)  return 'style="border-color:var(--red);background:var(--red-bg)"';
+      if (diff <= 120) return 'style="border-color:var(--orange);background:var(--orange-bg)"';
+      return '';
+    };
+    // Alertes Carte Stationnement et Assurance : orange 30j, rouge expiré
+    const carteStdClass = (dateStr) => {
       if (!dateStr) return '';
       const d = new Date(dateStr); d.setHours(0,0,0,0);
       const diff = Math.round((d - today) / 86400000);
@@ -884,8 +904,9 @@ async function renderInformationVoiture(fiches) {
       <td><span class="historique-immat">${fiche.immat}</span></td>
       <td><input class="field-input" id="loueur-${key}" value="${escapeAttr(info.loueurProprietaire)}" placeholder="Loueur ou propriétaire"></td>
       <td><input class="field-input" id="emplacement-${key}" value="${escapeAttr(info.emplacementVehicule)}" placeholder="Emplacement"></td>
-      <td><input class="field-input" type="date" id="cartehandicap-${key}" value="${escapeAttr(chExp)}" ${carteClass(chExp)} title="${chExp ? 'Expiration : ' + formatDate(chExp) : 'Non renseignée'}" style="font-size:12px;padding:7px 6px;"></td>
-      <td><input class="field-input" type="date" id="cartestationnement-${key}" value="${escapeAttr(csExp)}" ${carteClass(csExp)} title="${csExp ? 'Expiration : ' + formatDate(csExp) : 'Non renseignée'}" style="font-size:12px;padding:7px 6px;"></td>
+      <td><input class="field-input" type="date" id="cartehandicap-${key}" value="${escapeAttr(chExp)}" ${carteHandicapClass(chExp)} title="${chExp ? 'Expiration : ' + formatDate(chExp) : 'Non renseignée'}" style="font-size:12px;padding:7px 6px;"></td>
+      <td><input class="field-input" type="date" id="cartestationnement-${key}" value="${escapeAttr(csExp)}" ${carteStdClass(csExp)} title="${csExp ? 'Expiration : ' + formatDate(csExp) : 'Non renseignée'}" style="font-size:12px;padding:7px 6px;"></td>
+      <td><input class="field-input" id="assurance-${key}" value="${escapeAttr(assurance)}" placeholder="Ex: AXA, MAIF..." style="font-size:13px;padding:7px 8px;"></td>
       <td>${formatDate(fiche.date)}</td>
       <td><button class="info-save-btn" onclick="saveCarInfo('${key}')">Enregistrer</button></td>
     </tr>`;
@@ -916,12 +937,14 @@ window.saveCarInfo = async function(key) {
   const emplacement = document.getElementById(`emplacement-${key}`)?.value.trim() || '';
   const carteHandicapExp = document.getElementById(`cartehandicap-${key}`)?.value || '';
   const carteStationnementExp = document.getElementById(`cartestationnement-${key}`)?.value || '';
+  const assurance = document.getElementById(`assurance-${key}`)?.value.trim() || '';
   try {
     await fn.setDoc(fn.doc(db,'vehicules',key), {
       loueurProprietaire: loueur,
       emplacementVehicule: emplacement,
       carteHandicapExp: carteHandicapExp || null,
       carteStationnementExp: carteStationnementExp || null,
+      assurance: assurance || null,
       updatedAt: fn.serverTimestamp()
     }, { merge: true });
     vehicleInfoCache[key] = {
@@ -929,11 +952,13 @@ window.saveCarInfo = async function(key) {
       loueurProprietaire: loueur,
       emplacementVehicule: emplacement,
       carteHandicapExp: carteHandicapExp || null,
-      carteStationnementExp: carteStationnementExp || null
+      carteStationnementExp: carteStationnementExp || null,
+      assurance: assurance || null
     };
     showToast('✓ Informations voiture enregistrées');
   } catch(e) {
-    showToast('Erreur enregistrement');
+    showToast('Erreur enregistrement : ' + e.message);
+    console.error(e);
   }
 };
 
@@ -972,10 +997,11 @@ window.showFicheDetail = async function(id) {
     if (diff <= 30) return `${formatDate(dateStr)} <span class="ct-warning-inline urgent">⚠ ${diff}j</span>`;
     return formatDate(dateStr);
   };
-  const cartesSection = (vehicleData?.carteHandicapExp || vehicleData?.carteStationnementExp) ? `
-    <div class="detail-section"><div class="detail-section-title">Cartes véhicule</div>
+  const cartesSection = (vehicleData?.carteHandicapExp || vehicleData?.carteStationnementExp || vehicleData?.assurance) ? `
+    <div class="detail-section"><div class="detail-section-title">Cartes & Assurance</div>
       <div class="detail-row"><span class="detail-key">♿ Carte Handicap</span><span class="detail-value">${carteAlertBadge(vehicleData.carteHandicapExp)}</span></div>
       <div class="detail-row"><span class="detail-key">🅿 Carte Stationnement</span><span class="detail-value">${carteAlertBadge(vehicleData.carteStationnementExp)}</span></div>
+      <div class="detail-row"><span class="detail-key">🛡 Assurance</span><span class="detail-value">${vehicleData.assurance || '—'}</span></div>
     </div>` : '';
 
   const photosSection = vehicleData?.photos?.length ? `
