@@ -108,14 +108,45 @@
   .stat-number{font-size:22px;font-weight:600;color:var(--accent)}
   .stat-label{font-size:11px;color:var(--text3);margin-top:2px}
   .info-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:background .25s,border-color .25s}
-  .info-table{width:100%;border-collapse:collapse}
-  .info-table th{background:var(--surface2);color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:11px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
-  .info-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
+  .info-table{width:100%;border-collapse:collapse;table-layout:fixed}
+  .info-table th{background:var(--surface2);color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:10px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border2);white-space:normal;word-break:break-word;line-height:1.3}
+  .info-table td{padding:8px;border-bottom:1px solid var(--border);vertical-align:middle;border-right:1px solid var(--border)}
+  .info-table th:last-child,.info-table td:last-child{border-right:none}
   .info-table tr:last-child td{border-bottom:0}
-  .info-table .field-input{min-width:160px;padding:8px 10px;font-size:14px}
-  .info-save-btn{border:1px solid var(--accent);background:var(--accent-light);color:var(--accent);border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .info-table .field-input{width:100%;padding:7px 8px;font-size:13px;min-width:0}
+  .info-table col.col-immat{width:110px}
+  .info-table col.col-loueur{width:16%}
+  .info-table col.col-emplacement{width:16%}
+  .info-table col.col-carte{width:130px}
+  .info-table col.col-date{width:90px}
+  .info-table col.col-btn{width:95px}
+  .info-save-btn{border:1px solid var(--accent);background:var(--accent-light);color:var(--accent);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;width:100%}
   .info-save-btn:active{opacity:.8}
-  @media(max-width:700px){.info-table-wrap{overflow-x:auto}.info-table{min-width:720px}}
+  @media(max-width:900px){.info-table-wrap{overflow-x:auto}.info-table{min-width:820px;table-layout:auto}}
+
+  /* DESIGN EPURE V3 */
+  :root,[data-theme="light"]{--bg:#F4F7F6;--surface:#FFFFFF;--surface2:#F1F5F4;--border:#DCE5E2;--border2:#B8C9C4;--text:#17211F;--text2:#5F6F6A;--text3:#94A39F;--accent:#176B61;--accent-light:#E5F3F0;--header-bg:#153D3A}
+  [data-theme="dark"]{--bg:#101414;--surface:#191F1F;--surface2:#202828;--border:#2C3836;--border2:#40514E;--text:#EFF5F3;--text2:#A8B7B3;--text3:#65746F;--accent:#5EC6B6;--accent-light:#173A36;--header-bg:#0D1716}
+  body{background:linear-gradient(180deg,var(--bg) 0%,var(--surface2) 100%);line-height:1.35}
+  .app-header{height:60px;padding:0 18px;box-shadow:0 8px 24px rgba(10,30,28,.12)}
+  .header-logo,.theme-toggle{border-radius:8px}
+  .nav-tabs{top:60px;gap:8px;padding:8px 16px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid color-mix(in srgb,var(--border) 70%,transparent);box-shadow:0 8px 20px rgba(12,32,30,.06)}
+  .nav-tab{border-bottom:0;border-radius:8px;padding:10px 8px;font-size:12px}
+  .nav-tab.active{background:var(--accent);color:#fff;border-bottom:0;box-shadow:0 6px 14px rgba(23,107,97,.2)}
+  .view{max-width:1040px;margin:0 auto;padding:18px 16px 90px}
+  .card,.historique-month,.historique-item,.stat-card,.info-table-wrap{border-radius:8px;box-shadow:0 10px 28px rgba(14,35,32,.06)}
+  .card-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px}
+  .card-header-icon{border-radius:7px}
+  .field-input,.etat-select,.search-input{border-radius:8px;background:var(--surface);border-color:var(--border)}
+  .field-input:focus,.etat-select:focus,.search-input:focus{box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent)}
+  .btn-primary{border-radius:8px;box-shadow:0 10px 24px rgba(23,107,97,.24)}
+  .info-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;margin-bottom:14px}
+  .info-toolbar .search-wrap{margin-bottom:0}
+  .info-count{font-size:12px;color:var(--text2);white-space:nowrap}
+  .info-table th{background:var(--surface2)}
+  .info-table tbody tr:hover{background:color-mix(in srgb,var(--accent-light) 40%,transparent)}
+  .info-table .historique-immat{margin-bottom:0}
+  @media(max-width:700px){.app-header{height:56px}.nav-tabs{top:56px;padding:7px 8px}.nav-tab{font-size:11px;padding:9px 5px}.view{padding:14px 12px 86px}.info-toolbar{grid-template-columns:1fr}.info-count{padding-left:2px}}
 
   /* CT ALERTS */
   .ct-alerts-banner{margin-bottom:14px}
@@ -385,19 +416,40 @@
   <div class="card">
     <div class="card-header"><div class="card-header-icon">🚘</div>Information voiture</div>
     <div class="card-body">
+      <div class="info-toolbar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-input" type="text" id="informationSearchInput" placeholder="Rechercher une plaque, un loueur ou un emplacement..." oninput="onInformationSearch(this.value)" autocomplete="off" autocorrect="off" autocapitalize="characters">
+          <button class="search-clear" id="informationSearchClear" onclick="clearInformationSearch()">✕</button>
+        </div>
+        <div class="info-count" id="informationCount">0 véhicule</div>
+      </div>
       <div class="info-table-wrap">
         <table class="info-table">
+          <colgroup>
+            <col class="col-immat">
+            <col class="col-loueur">
+            <col class="col-emplacement">
+            <col class="col-carte">
+            <col class="col-carte">
+            <col class="col-carte">
+            <col class="col-date">
+            <col class="col-btn">
+          </colgroup>
           <thead>
             <tr>
               <th>Immatriculation</th>
               <th>Loueur/Propriétaire</th>
-              <th>Emplacement Véhicules</th>
+              <th>Emplacement Véhicule</th>
+              <th>Carte Handicap</th>
+              <th>Carte Stationnement</th>
+              <th>Assurance</th>
               <th>Dernière fiche</th>
               <th></th>
             </tr>
           </thead>
           <tbody id="information-list">
-            <tr><td colspan="5" class="historique-month-empty">Chargement...</td></tr>
+            <tr><td colspan="8" class="historique-month-empty">Chargement...</td></tr>
           </tbody>
         </table>
       </div>
@@ -435,7 +487,7 @@ const firebaseConfig = {
   appId: "1:890819610459:web:41ca8e8a65ab3897c5fc7e",
 };
 
-let db, allFiches = [], currentFilter = 'tous', currentSearch = '';
+let db, allFiches = [], currentFilter = 'tous', currentSearch = '', informationSearch = '';
 const vehicleInfoCache = {};
 
 try {
@@ -446,9 +498,11 @@ try {
   setSyncStatus('connected');
 
   const q = query(collection(db, 'fiches-entretien'), orderBy('createdAt', 'desc'));
-  onSnapshot(q, snap => {
+  onSnapshot(q, async snap => {
     allFiches = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     window._allFiches = allFiches;
+    // Charger TOUS les véhicules au démarrage pour que les alertes fonctionnent partout
+    await preloadAllVehicleInfo(allFiches);
     renderAll();
     document.getElementById('loadingOverlay').style.display = 'none';
   });
@@ -496,19 +550,20 @@ async function saveVehicleData(immat) {
   if (!immat || !db) return;
   const key = immat.replace(/[^A-Z0-9]/g,'');
   const fn = window._firestoreFns;
-  // Récupérer les photos existantes
-  let existingPhotos = [];
+  // Récupérer les données existantes pour ne pas les écraser
+  let existingData = {};
   try {
     const snap = await fn.getDoc(fn.doc(db, 'vehicules', key));
-    if (snap.exists()) existingPhotos = snap.data().photos || [];
+    if (snap.exists()) existingData = snap.data();
   } catch(e) {}
+  // merge:true pour ne jamais écraser loueur, emplacement, cartes, assurance etc.
   await fn.setDoc(fn.doc(db, 'vehicules', key), {
     immat,
-    etatGeneral: document.getElementById('etatGeneral').value || null,
-    notesEtat: document.getElementById('notesEtat').value || null,
-    photos: existingPhotos,
+    etatGeneral: document.getElementById('etatGeneral')?.value || null,
+    notesEtat: document.getElementById('notesEtat')?.value || null,
+    photos: existingData.photos || [],
     updatedAt: fn.serverTimestamp()
-  });
+  }, { merge: true });
 }
 
 /* ========== PHOTOS ========== */
@@ -617,8 +672,8 @@ function ctStatus(ctProchain) {
   const ct = new Date(ctProchain); ct.setHours(0,0,0,0);
   const d = Math.round((ct - now) / 86400000);
   if (d < 0) return { type:'expired', days:Math.abs(d), label:`Expiré depuis ${Math.abs(d)} jour${Math.abs(d)>1?'s':''}` };
-  if (d <= 7) return { type:'urgent', days:d, label:`Expire dans ${d} jour${d>1?'s':''}` };
-  if (d <= 30) return { type:'soon', days:d, label:`Dans ${d} jours` };
+  if (d === 0) return { type:'soon', days:d, label:'Aujourd\'hui' };
+  if (d <= 30) return { type:'soon', days:d, label:`Dans ${d} jour${d>1?'s':''}` };
   return null;
 }
 window.ctStatus = ctStatus;
@@ -635,14 +690,39 @@ function renderCTAlerts(fiches) {
   const byV = {};
   fiches.forEach(f => { if(!f.ctProchain) return; if(!byV[f.immat]||f.date>byV[f.immat].date) byV[f.immat]=f; });
   const alerts = Object.values(byV).map(f=>({fiche:f,status:ctStatus(f.ctProchain)})).filter(a=>a.status!==null).sort((a,b)=>a.status.days-b.status.days);
-  const critCount = alerts.filter(a=>a.status.type==='expired'||a.status.type==='urgent').length;
+
+  // Alertes cartes handicap / stationnement
+  const now = new Date(); now.setHours(0,0,0,0);
+  const carteAlerts = [];
+  Object.entries(vehicleInfoCache||{}).forEach(([key, info]) => {
+    ['carteHandicapExp','carteStationnementExp'].forEach(field => {
+      if (!info[field]) return;
+      const d = new Date(info[field]); d.setHours(0,0,0,0);
+      const diff = Math.round((d - now) / 86400000);
+      // Carte Handicap : orange 120j, rouge 90j / Autres : orange 30j, rouge expiré
+      const isHandicap = field === 'carteHandicapExp';
+      const orangeSeuil = isHandicap ? 120 : 30;
+      const rougeSeuil = isHandicap ? 90 : 0;
+      const shouldAlert = diff < 0 || diff <= orangeSeuil;
+      if (!shouldAlert) return;
+      const labels = {carteHandicapExp:'♿ Carte Handicap', carteStationnementExp:'🅿 Carte Stationnement', assuranceExp:'🛡 Assurance'};
+      const type = diff < 0 ? 'expired' : diff <= rougeSeuil ? 'urgent' : 'soon';
+      const msg = diff < 0 ? `Expirée depuis ${Math.abs(diff)}j` : `Expire dans ${diff}j`;
+      carteAlerts.push({ immat: info.immat || key, label: labels[field], type, msg, date: info[field] });
+    });
+  });
+
+  const critCount = alerts.filter(a=>a.status.type==='expired'||a.status.type==='urgent').length + carteAlerts.filter(a=>a.type==='expired'||a.type==='urgent').length;
   const stat = document.getElementById('stat-alertes');
-  stat.textContent = critCount||alerts.length;
-  stat.style.color = critCount>0?'var(--red)':alerts.length>0?'var(--orange)':'var(--accent)';
+  stat.textContent = critCount || (alerts.length + carteAlerts.length);
+  stat.style.color = critCount>0?'var(--red)':(alerts.length+carteAlerts.length)>0?'var(--orange)':'var(--accent)';
+
   const banner = document.getElementById('ct-alerts-banner');
-  if (!alerts.length) { banner.innerHTML=''; return; }
+  if (!alerts.length && !carteAlerts.length) { banner.innerHTML=''; return; }
   const icons = {expired:'🚨',urgent:'⚠️',soon:'📅'};
-  banner.innerHTML = `<div style="font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">Contrôles techniques</div>${alerts.slice(0,5).map(a=>`<div class="ct-alert-item ${a.status.type}"><span class="ct-alert-icon">${icons[a.status.type]}</span><div class="ct-alert-text"><div class="ct-alert-immat">${a.fiche.immat}</div><div class="ct-alert-detail">CT prochain : ${formatDate(a.fiche.ctProchain)} — ${a.status.label}</div></div></div>`).join('')}`;
+  const ctHtml = alerts.length ? `<div style="font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">Contrôles techniques</div>${alerts.map(a=>`<div class="ct-alert-item ${a.status.type}"><span class="ct-alert-icon">${icons[a.status.type]}</span><div class="ct-alert-text"><div class="ct-alert-immat">${a.fiche.immat}</div><div class="ct-alert-detail">CT prochain : ${formatDate(a.fiche.ctProchain)} — ${a.status.label}</div></div></div>`).join('')}` : '';
+  const carteHtml = carteAlerts.length ? `<div style="font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin:${alerts.length?'12px':0} 0 8px;">Cartes véhicules</div>${carteAlerts.map(a=>`<div class="ct-alert-item ${a.type}"><span class="ct-alert-icon">${icons[a.type]}</span><div class="ct-alert-text"><div class="ct-alert-immat">${a.immat}</div><div class="ct-alert-detail">${a.label} — ${a.msg} (${formatDate(a.date)})</div></div></div>`).join('')}` : '';
+  banner.innerHTML = ctHtml + carteHtml;
 }
 
 window.onSearch = function(val) {
@@ -745,6 +825,22 @@ function getLatestVehicleRows(fiches) {
   return Object.entries(rows).map(([key, fiche]) => ({ key, fiche })).sort((a,b)=>a.fiche.immat.localeCompare(b.fiche.immat));
 }
 
+// Charge tous les véhicules au démarrage pour que les alertes soient disponibles partout
+async function preloadAllVehicleInfo(fiches) {
+  const fn = window._firestoreFns;
+  if (!fn || !db) return;
+  const rows = getLatestVehicleRows(fiches);
+  await Promise.all(rows.map(async ({key}) => {
+    if (vehicleInfoCache[key]) return; // déjà en cache
+    try {
+      const snap = await fn.getDoc(fn.doc(db, 'vehicules', key));
+      vehicleInfoCache[key] = snap.exists() ? snap.data() : {};
+    } catch(e) {
+      vehicleInfoCache[key] = {};
+    }
+  }));
+}
+
 async function ensureVehicleInfoLoaded(rows) {
   const fn = window._firestoreFns;
   if (!fn || !db) return;
@@ -763,17 +859,72 @@ async function renderInformationVoiture(fiches) {
   const container = document.getElementById('information-list');
   if (!container) return;
   const rows = getLatestVehicleRows(fiches);
+  const count = document.getElementById('informationCount');
   if (!rows.length) {
-    container.innerHTML = '<tr><td colspan="5" class="historique-month-empty">Aucun v&eacute;hicule</td></tr>';
+    if (count) count.textContent = '0 véhicule';
+    container.innerHTML = '<tr><td colspan="7" class="historique-month-empty">Aucun v&eacute;hicule</td></tr>';
     return;
   }
   await ensureVehicleInfoLoaded(rows);
-  container.innerHTML = rows.map(({key, fiche}) => {
+  const q = informationSearch.replace(/[-\s]/g,'').toUpperCase();
+  const filteredRows = q ? rows.filter(({key, fiche}) => {
     const info = vehicleInfoCache[key] || {};
+    const haystack = [
+      fiche.immat,
+      fiche.immat?.replace(/[-\s]/g,''),
+      info.loueurProprietaire,
+      info.emplacementVehicule
+    ].join(' ').toUpperCase().replace(/[-\s]/g,'');
+    return haystack.includes(q);
+  }) : rows;
+  if (count) count.textContent = `${filteredRows.length} véhicule${filteredRows.length>1?'s':''}`;
+  if (!filteredRows.length) {
+    container.innerHTML = '<tr><td colspan="7" class="historique-month-empty">Aucun véhicule trouvé</td></tr>';
+    return;
+  }
+  // Tri automatique par emplacement (alphabétique), puis par immat si même emplacement
+  filteredRows.sort((a, b) => {
+    const empA = (vehicleInfoCache[a.key]?.emplacementVehicule || '').trim().toUpperCase();
+    const empB = (vehicleInfoCache[b.key]?.emplacementVehicule || '').trim().toUpperCase();
+    // Les véhicules sans emplacement vont à la fin
+    if (!empA && empB) return 1;
+    if (empA && !empB) return -1;
+    if (empA !== empB) return empA.localeCompare(empB, 'fr');
+    return a.fiche.immat.localeCompare(b.fiche.immat, 'fr');
+  });
+  container.innerHTML = filteredRows.map(({key, fiche}) => {
+    const info = vehicleInfoCache[key] || {};
+    const chExp = info.carteHandicapExp || '';
+    const csExp = info.carteStationnementExp || '';
+    const assurance = info.assurance || '';
+    const today = new Date(); today.setHours(0,0,0,0);
+
+    // Alertes Carte Handicap : orange à 4 mois, rouge à 3 mois
+    const carteHandicapClass = (dateStr) => {
+      if (!dateStr) return '';
+      const d = new Date(dateStr); d.setHours(0,0,0,0);
+      const diff = Math.round((d - today) / 86400000);
+      if (diff < 0) return 'style="border-color:var(--red);background:var(--red-bg)"';
+      if (diff <= 90)  return 'style="border-color:var(--red);background:var(--red-bg)"';
+      if (diff <= 120) return 'style="border-color:var(--orange);background:var(--orange-bg)"';
+      return '';
+    };
+    // Alertes Carte Stationnement et Assurance : orange 30j, rouge expiré
+    const carteStdClass = (dateStr) => {
+      if (!dateStr) return '';
+      const d = new Date(dateStr); d.setHours(0,0,0,0);
+      const diff = Math.round((d - today) / 86400000);
+      if (diff < 0) return 'style="border-color:var(--red);background:var(--red-bg)"';
+      if (diff <= 30) return 'style="border-color:var(--orange);background:var(--orange-bg)"';
+      return '';
+    };
     return `<tr>
       <td><span class="historique-immat">${fiche.immat}</span></td>
-      <td><input class="field-input" id="loueur-${key}" value="${escapeAttr(info.loueurProprietaire)}" placeholder="Loueur ou propri&eacute;taire"></td>
+      <td><input class="field-input" id="loueur-${key}" value="${escapeAttr(info.loueurProprietaire)}" placeholder="Loueur ou propriétaire"></td>
       <td><input class="field-input" id="emplacement-${key}" value="${escapeAttr(info.emplacementVehicule)}" placeholder="Emplacement"></td>
+      <td><input class="field-input" type="date" id="cartehandicap-${key}" value="${escapeAttr(chExp)}" ${carteHandicapClass(chExp)} title="${chExp ? 'Expiration : ' + formatDate(chExp) : 'Non renseignée'}" style="font-size:12px;padding:7px 6px;"></td>
+      <td><input class="field-input" type="date" id="cartestationnement-${key}" value="${escapeAttr(csExp)}" ${carteStdClass(csExp)} title="${csExp ? 'Expiration : ' + formatDate(csExp) : 'Non renseignée'}" style="font-size:12px;padding:7px 6px;"></td>
+      <td><input class="field-input" id="assurance-${key}" value="${escapeAttr(assurance)}" placeholder="Ex: AXA, MAIF..." style="font-size:13px;padding:7px 8px;"></td>
       <td>${formatDate(fiche.date)}</td>
       <td><button class="info-save-btn" onclick="saveCarInfo('${key}')">Enregistrer</button></td>
     </tr>`;
@@ -781,21 +932,51 @@ async function renderInformationVoiture(fiches) {
 }
 window.renderInformationVoiture = renderInformationVoiture;
 
+window.onInformationSearch = function(val) {
+  informationSearch = val.trim();
+  const clear = document.getElementById('informationSearchClear');
+  if (clear) clear.classList.toggle('visible', informationSearch.length>0);
+  renderInformationVoiture(allFiches);
+};
+
+window.clearInformationSearch = function() {
+  const input = document.getElementById('informationSearchInput');
+  if (input) input.value = '';
+  informationSearch = '';
+  const clear = document.getElementById('informationSearchClear');
+  if (clear) clear.classList.remove('visible');
+  renderInformationVoiture(allFiches);
+};
+
 window.saveCarInfo = async function(key) {
   const fn = window._firestoreFns;
   if (!fn || !db) return showToast('Connexion indisponible');
   const loueur = document.getElementById(`loueur-${key}`)?.value.trim() || '';
   const emplacement = document.getElementById(`emplacement-${key}`)?.value.trim() || '';
+  const carteHandicapExp = document.getElementById(`cartehandicap-${key}`)?.value || '';
+  const carteStationnementExp = document.getElementById(`cartestationnement-${key}`)?.value || '';
+  const assurance = document.getElementById(`assurance-${key}`)?.value.trim() || '';
   try {
     await fn.setDoc(fn.doc(db,'vehicules',key), {
       loueurProprietaire: loueur,
       emplacementVehicule: emplacement,
+      carteHandicapExp: carteHandicapExp || null,
+      carteStationnementExp: carteStationnementExp || null,
+      assurance: assurance || null,
       updatedAt: fn.serverTimestamp()
     }, { merge: true });
-    vehicleInfoCache[key] = { ...(vehicleInfoCache[key] || {}), loueurProprietaire: loueur, emplacementVehicule: emplacement };
-    showToast('Informations voiture enregistrées');
+    vehicleInfoCache[key] = {
+      ...(vehicleInfoCache[key] || {}),
+      loueurProprietaire: loueur,
+      emplacementVehicule: emplacement,
+      carteHandicapExp: carteHandicapExp || null,
+      carteStationnementExp: carteStationnementExp || null,
+      assurance: assurance || null
+    };
+    showToast('✓ Informations voiture enregistrées');
   } catch(e) {
-    showToast('Erreur enregistrement');
+    showToast('Erreur enregistrement : ' + e.message);
+    console.error(e);
   }
 };
 
@@ -824,6 +1005,23 @@ window.showFicheDetail = async function(id) {
       ${vehicleData.notesEtat?`<div style="font-size:13px;color:var(--text2);line-height:1.5;padding:6px 0;">${vehicleData.notesEtat}</div>`:''}
     </div>` : '';
 
+  // Cartes handicap / stationnement
+  const today2 = new Date(); today2.setHours(0,0,0,0);
+  const carteAlertBadge = (dateStr, label) => {
+    if (!dateStr) return `<span style="color:var(--text3)">—</span>`;
+    const d = new Date(dateStr); d.setHours(0,0,0,0);
+    const diff = Math.round((d - today2) / 86400000);
+    if (diff < 0) return `${formatDate(dateStr)} <span class="ct-warning-inline expired">🚨 Expirée</span>`;
+    if (diff <= 30) return `${formatDate(dateStr)} <span class="ct-warning-inline urgent">⚠ ${diff}j</span>`;
+    return formatDate(dateStr);
+  };
+  const cartesSection = (vehicleData?.carteHandicapExp || vehicleData?.carteStationnementExp || vehicleData?.assurance) ? `
+    <div class="detail-section"><div class="detail-section-title">Cartes & Assurance</div>
+      <div class="detail-row"><span class="detail-key">♿ Carte Handicap</span><span class="detail-value">${carteAlertBadge(vehicleData.carteHandicapExp)}</span></div>
+      <div class="detail-row"><span class="detail-key">🅿 Carte Stationnement</span><span class="detail-value">${carteAlertBadge(vehicleData.carteStationnementExp)}</span></div>
+      <div class="detail-row"><span class="detail-key">🛡 Assurance</span><span class="detail-value">${vehicleData.assurance || '—'}</span></div>
+    </div>` : '';
+
   const photosSection = vehicleData?.photos?.length ? `
     <div class="detail-section"><div class="detail-section-title">Photos / Dommages (${vehicleData.photos.length})</div>
       <div class="modal-photos-grid">
@@ -835,6 +1033,7 @@ window.showFicheDetail = async function(id) {
     <div class="modal-title">${fiche.immat}</div>
     <div class="modal-subtitle">Fiche du ${formatDate(fiche.date)} · ${fiche.km?.toLocaleString('fr-FR')} km</div>
     ${etatSection}
+    ${cartesSection}
     ${photosSection}
     <div class="detail-section"><div class="detail-section-title">Véhicule</div>
       <div class="detail-row"><span class="detail-key">Date</span><span class="detail-value">${formatDate(fiche.date)}</span></div>
