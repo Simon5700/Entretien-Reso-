@@ -228,6 +228,98 @@
   .empty-state h3{font-size:16px;font-weight:500;margin-bottom:6px;color:var(--text)}
   .empty-state p{font-size:14px;line-height:1.5}
   .immat-display{font-family:'DM Mono',monospace;letter-spacing:2px;font-weight:500}
+  /* VERSION PROFESSIONNELLE SANS ICONES EMOJI */
+  :root,[data-theme="light"]{
+    --bg:#EEF2F5;--surface:#FFFFFF;--surface2:#F6F8FA;--border:#D8E1E7;--border2:#AAB8C2;--text:#15202B;--text2:#53616D;--text3:#8998A5;
+    --accent:#0F766E;--accent-light:#E4F5F2;--green:#18794E;--green-bg:#E8F6EF;--orange:#9A6700;--orange-bg:#FFF4D6;--red:#B42318;--red-bg:#FFE8E6;--header-bg:#0B1720;--modal-bg:rgba(7,14,20,.62);
+    --shadow-sm:0 2px 8px rgba(16,31,43,.06);--shadow-md:0 14px 34px rgba(16,31,43,.10);--shadow-lg:0 24px 60px rgba(16,31,43,.16);--focus:rgba(15,118,110,.18)
+  }
+  [data-theme="dark"]{
+    --bg:#0C1116;--surface:#151B22;--surface2:#1B232C;--border:#2B3743;--border2:#41515F;--text:#F3F7FA;--text2:#A9B6C1;--text3:#748390;
+    --accent:#5ED0C4;--accent-light:#153B38;--green:#55C88A;--green-bg:#102B20;--orange:#E0B33E;--orange-bg:#312706;--red:#FF756D;--red-bg:#351815;--header-bg:#071014;--modal-bg:rgba(0,0,0,.76);
+    --shadow-sm:0 2px 8px rgba(0,0,0,.22);--shadow-md:0 14px 34px rgba(0,0,0,.30);--shadow-lg:0 24px 70px rgba(0,0,0,.44);--focus:rgba(94,208,196,.18)
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(180deg,var(--header-bg) 0 128px,var(--bg) 128px 100%);letter-spacing:0;line-height:1.35}
+  .app-header{height:68px;padding:0 22px;background:var(--header-bg);box-shadow:0 1px 0 rgba(255,255,255,.06),0 18px 40px rgba(0,0,0,.20)}
+  .app-header h1{font-size:20px;font-weight:700;letter-spacing:0}
+  .header-logo{width:42px;height:42px;border-radius:8px;background:linear-gradient(145deg,#0F766E,#164E63);font-size:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 12px 24px rgba(0,0,0,.18)}
+  .header-logo::before{content:'FE';font-size:13px;font-weight:800;letter-spacing:.8px;color:#fff}
+  .theme-toggle{width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,.08);font-size:0;position:relative;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+  .theme-toggle::before{content:'';width:14px;height:14px;border-radius:50%;border:2px solid #fff;display:block}
+  .theme-toggle:hover{background:rgba(255,255,255,.14);transform:translateY(-1px)}
+  #syncStatus{font-size:13px;color:rgba(255,255,255,.78)}
+  #syncDot{width:8px;height:8px;box-shadow:0 0 0 4px rgba(74,222,128,.14)}
+  .nav-tabs{top:68px;max-width:1160px;margin:0 auto;gap:10px;padding:12px 18px;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid color-mix(in srgb,var(--border) 78%,transparent);border-left:0;border-right:0;backdrop-filter:blur(18px);box-shadow:var(--shadow-sm)}
+  .nav-tab{border:0;border-radius:8px;padding:13px 12px;font-size:14px;font-weight:700;color:var(--text2)}
+  .nav-tab:hover{background:var(--surface2);color:var(--text);transform:translateY(-1px)}
+  .nav-tab.active{background:linear-gradient(135deg,var(--accent),#2563EB);color:#fff;border:0;box-shadow:0 12px 24px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .view{max-width:1160px;margin:0 auto;padding:24px 18px 96px}
+  .view.active{animation:viewIn .28s ease-out both}
+  @keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .card,.historique-month,.historique-item,.stat-card,.info-table-wrap{border-radius:8px;border-color:color-mix(in srgb,var(--border) 84%,transparent);box-shadow:var(--shadow-md)}
+  .card{margin-bottom:16px;overflow:hidden}
+  .card-header{padding:15px 18px;background:linear-gradient(180deg,var(--surface),var(--surface2));font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)}
+  .card-header-icon{width:4px;height:26px;border-radius:999px;background:linear-gradient(180deg,var(--accent),#2563EB);font-size:0;box-shadow:none}
+  .card-body{padding:18px}
+  .field-label{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:7px}
+  .field-input,.etat-select,.search-input{min-height:42px;border-radius:8px;border-color:var(--border);background:color-mix(in srgb,var(--surface) 94%,var(--surface2));box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+  .field-input:hover,.etat-select:hover,.search-input:hover{border-color:var(--border2)}
+  .field-input:focus,.etat-select:focus,.search-input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--focus);background:var(--surface)}
+  .search-icon{font-size:0;width:15px;height:15px;left:14px;border:2px solid var(--text3);border-radius:50%}
+  .search-icon::after{content:'';position:absolute;width:7px;height:2px;background:var(--text3);right:-5px;bottom:-3px;transform:rotate(45deg);border-radius:999px}
+  .search-clear{font-size:0}
+  .search-clear::before,.lightbox-close::before{content:'×';font-size:16px;line-height:1}
+  .btn-primary,.btn-secondary,.btn-danger,.info-save-btn,.filter-chip,.proprete-btn,.status-btn,.photo-add-btn{transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease,color .18s ease}
+  .btn-primary{border-radius:8px;padding:16px;background:linear-gradient(135deg,var(--accent),#2563EB);box-shadow:0 16px 34px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 20px 42px color-mix(in srgb,var(--accent) 34%,transparent)}
+  .btn-secondary:hover,.info-save-btn:hover,.filter-chip:hover,.proprete-btn:hover,.status-btn:hover,.photo-add-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+  .stats-bar{gap:14px;margin-bottom:20px}
+  .stat-card{padding:18px 14px;background:linear-gradient(180deg,var(--surface),var(--surface2))}
+  .stat-number{font-size:30px;font-weight:800;line-height:1;color:var(--accent)}
+  .stat-label{font-size:12px;font-weight:700;color:var(--text2);margin-top:8px}
+  .ct-alerts-banner{margin-bottom:18px}
+  .ct-alert-item{position:relative;display:block;border-radius:8px;padding:15px 18px 15px 20px;margin-bottom:10px;box-shadow:var(--shadow-sm);animation:itemIn .24s ease-out both}
+  .ct-alert-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:8px 0 0 8px;background:currentColor}
+  .ct-alert-icon{display:none}
+  .ct-alert-item.soon{background:linear-gradient(90deg,#FFF8DA,#FFF3B0);border-color:#D8B400;color:#6D5800}
+  [data-theme="dark"] .ct-alert-item.soon{background:linear-gradient(90deg,#332B05,#292302);border-color:#806D04;color:#F0D45A}
+  .ct-alert-item.urgent{background:linear-gradient(90deg,var(--orange-bg),color-mix(in srgb,var(--orange-bg) 75%,var(--surface)));border-color:var(--orange)}
+  .ct-alert-item.expired{background:linear-gradient(90deg,var(--red-bg),color-mix(in srgb,var(--red-bg) 76%,var(--surface)));border-color:var(--red)}
+  .ct-alert-immat{font-size:16px}
+  .ct-alert-detail{font-size:13px}
+  .filter-chip{border-radius:999px;padding:8px 14px;background:var(--surface);box-shadow:var(--shadow-sm)}
+  .filter-chip.active{background:var(--text);border-color:var(--text);color:var(--surface)}
+  .historique-month summary{padding:16px 18px;background:linear-gradient(180deg,var(--surface),var(--surface2))}
+  .historique-month-title{font-size:15px}
+  .historique-month-body{padding:12px}
+  .historique-item{padding:16px 18px}
+  .historique-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--accent) 38%,var(--border))}
+  .historique-immat{border-radius:7px;font-weight:700;letter-spacing:1.1px}
+  .badge{border-radius:999px;padding:4px 10px}
+  .empty-state-icon{display:none}
+  .info-toolbar{margin-bottom:16px}
+  .info-table-wrap{overflow:hidden}
+  .info-table th{font-weight:800;background:var(--surface2)}
+  .info-table td{background:color-mix(in srgb,var(--surface) 96%,var(--surface2))}
+  .info-table tbody tr:hover td{background:var(--accent-light)}
+  .photo-add-btn span{display:none}
+  .photo-add-btn small{font-size:12px;color:var(--text2)}
+  .modal-overlay.open{animation:overlayIn .18s ease-out both}
+  .modal-sheet{border-radius:8px 8px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.28);animation:sheetIn .24s ease-out both}
+  .modal-title{font-size:22px;font-weight:800}
+  .toast{border-radius:8px;box-shadow:var(--shadow-lg)}
+  @keyframes itemIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes overlayIn{from{opacity:0}to{opacity:1}}
+  @keyframes sheetIn{from{transform:translateY(18px)}to{transform:translateY(0)}}
+  @media(max-width:700px){
+    body{background:var(--bg)}
+    .app-header{height:60px;padding:0 14px}.app-header h1{font-size:17px}.header-logo,.theme-toggle{width:38px;height:38px}
+    .nav-tabs{top:60px;padding:8px;gap:6px}.nav-tab{font-size:12px;padding:10px 6px}
+    .view{padding:16px 12px 88px}.stats-bar{gap:8px}.stat-card{padding:14px 8px}.stat-number{font-size:24px}
+    .row-2{grid-template-columns:1fr}.card-body{padding:15px}.ct-alert-item{padding:13px 14px 13px 18px}
+  }
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
   select option{background:var(--surface);color:var(--text)}
 </style>
 </head>
@@ -240,12 +332,12 @@
 
 <div class="app-header">
   <div class="header-left">
-    <div class="header-logo">🔧</div>
+    <div class="header-logo">FE</div>
     <h1>Fiche d'Entretien</h1>
   </div>
   <div class="header-right">
     <div id="syncStatus"><span id="syncDot"></span><span id="syncLabel">—</span></div>
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Changer le thème"></button>
   </div>
 </div>
 
@@ -266,7 +358,7 @@
 
   <!-- VÉHICULE -->
   <div class="card">
-    <div class="card-header"><div class="card-header-icon">🚗</div>Véhicule</div>
+    <div class="card-header"><div class="card-header-icon"></div>Véhicule</div>
     <div class="card-body">
       <div class="field-group">
         <label class="field-label">Immatriculation</label>
@@ -291,15 +383,15 @@
 
   <!-- ÉTAT GÉNÉRAL PERSISTANT -->
   <div class="card">
-    <div class="card-header"><div class="card-header-icon">⭐</div>État général du véhicule <span style="font-size:10px;margin-left:4px;opacity:.7;font-style:italic;font-weight:400">(mémorisé par véhicule)</span></div>
+    <div class="card-header"><div class="card-header-icon"></div>État général du véhicule <span style="font-size:10px;margin-left:4px;opacity:.7;font-style:italic;font-weight:400">(mémorisé par véhicule)</span></div>
     <div class="card-body">
       <div class="field-group">
         <label class="field-label">État général</label>
         <select class="etat-select" id="etatGeneral" onchange="onEtatChange(this)">
           <option value="">— Non renseigné —</option>
-          <option value="bon">✓ Bon état</option>
+          <option value="bon">Bon état</option>
           <option value="moyen">~ État moyen</option>
-          <option value="mauvais">✗ Mauvais état</option>
+          <option value="mauvais">Mauvais état</option>
         </select>
       </div>
       <div class="field-group">
@@ -319,7 +411,7 @@
 
   <!-- CONTRÔLE TECHNIQUE -->
   <div class="card">
-    <div class="card-header"><div class="card-header-icon">📋</div>Contrôle technique</div>
+    <div class="card-header"><div class="card-header-icon"></div>Contrôle technique</div>
     <div class="card-body">
       <div class="row-2">
         <div class="field-group">
@@ -340,22 +432,22 @@
 
   <!-- PROPRETÉ -->
   <div class="card">
-    <div class="card-header"><div class="card-header-icon">✨</div>Propreté du véhicule</div>
+    <div class="card-header"><div class="card-header-icon"></div>Propreté du véhicule</div>
     <div class="card-body">
       <div class="field-group">
         <label class="field-label">Intérieur</label>
         <div class="proprete-options">
-          <button class="proprete-btn" onclick="setProprete('interieur','Bon')" id="prop-int-bon">✓ Bon</button>
+          <button class="proprete-btn" onclick="setProprete('interieur','Bon')" id="prop-int-bon">Bon</button>
           <button class="proprete-btn" onclick="setProprete('interieur','Moyen')" id="prop-int-moyen">~ Moyen</button>
-          <button class="proprete-btn" onclick="setProprete('interieur','Mauvais')" id="prop-int-mauvais">✗ Mauvais</button>
+          <button class="proprete-btn" onclick="setProprete('interieur','Mauvais')" id="prop-int-mauvais">Mauvais</button>
         </div>
       </div>
       <div class="field-group">
         <label class="field-label">Extérieur</label>
         <div class="proprete-options">
-          <button class="proprete-btn" onclick="setProprete('exterieur','Bon')" id="prop-ext-bon">✓ Bon</button>
+          <button class="proprete-btn" onclick="setProprete('exterieur','Bon')" id="prop-ext-bon">Bon</button>
           <button class="proprete-btn" onclick="setProprete('exterieur','Moyen')" id="prop-ext-moyen">~ Moyen</button>
-          <button class="proprete-btn" onclick="setProprete('exterieur','Mauvais')" id="prop-ext-mauvais">✗ Mauvais</button>
+          <button class="proprete-btn" onclick="setProprete('exterieur','Mauvais')" id="prop-ext-mauvais">Mauvais</button>
         </div>
       </div>
       <div class="field-group">
@@ -367,7 +459,7 @@
 
   <!-- CONTROLES -->
   <div class="card">
-    <div class="card-header"><div class="card-header-icon">🔍</div>Contrôles</div>
+    <div class="card-header"><div class="card-header-icon"></div>Contrôles</div>
     <div class="card-body" id="controles-list"></div>
     <div style="padding:0 16px 16px;">
       <div class="field-group">
@@ -379,7 +471,7 @@
 
   <!-- OBS GÉNÉRALES -->
   <div class="card">
-    <div class="card-header"><div class="card-header-icon">📝</div>Observations générales</div>
+    <div class="card-header"><div class="card-header-icon"></div>Observations générales</div>
     <div class="card-body">
       <textarea class="field-input" id="obs-generales" placeholder="Toute autre observation importante..." style="min-height:100px;"></textarea>
     </div>
@@ -397,28 +489,28 @@
   </div>
   <div id="ct-alerts-banner" class="ct-alerts-banner"></div>
   <div class="search-wrap">
-    <span class="search-icon">🔍</span>
+    <span class="search-icon"></span>
     <input class="search-input" type="text" id="searchInput" placeholder="Rechercher une immatriculation..." oninput="onSearch(this.value)" autocomplete="off" autocorrect="off" autocapitalize="characters">
     <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
   </div>
   <div class="filter-bar">
     <div class="filter-chip active" onclick="filtrer('tous',this)">Toutes</div>
-    <div class="filter-chip" onclick="filtrer('nok',this)">⚠ À traiter</div>
+    <div class="filter-chip" onclick="filtrer('nok',this)">À traiter</div>
     <div class="filter-chip" onclick="filtrer('ce-mois',this)">Ce mois</div>
   </div>
   <div id="historique-list">
-    <div class="empty-state"><div class="empty-state-icon">🔧</div><h3>Aucune fiche enregistrée</h3><p>Créez votre première fiche via l'onglet "Nouvelle fiche".</p></div>
+    <div class="empty-state"><div class="empty-state-icon"></div><h3>Aucune fiche enregistrée</h3><p>Créez votre première fiche via l'onglet "Nouvelle fiche".</p></div>
   </div>
 </div>
 
 <!-- ========== VUE INFORMATION VOITURE ========== -->
 <div class="view" id="view-information">
   <div class="card">
-    <div class="card-header"><div class="card-header-icon">🚘</div>Information voiture</div>
+    <div class="card-header"><div class="card-header-icon"></div>Information voiture</div>
     <div class="card-body">
       <div class="info-toolbar">
         <div class="search-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"></span>
           <input class="search-input" type="text" id="informationSearchInput" placeholder="Rechercher une plaque, un loueur ou un emplacement..." oninput="onInformationSearch(this.value)" autocomplete="off" autocorrect="off" autocapitalize="characters">
           <button class="search-clear" id="informationSearchClear" onclick="clearInformationSearch()">✕</button>
         </div>
@@ -477,7 +569,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, setDoc, getDoc, query, orderBy, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 // Pas de Storage Firebase — photos stockées en base64 dans Firestore
 
-// ⚠️ REMPLACE PAR TA CONFIG FIREBASE
+// Configuration Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyARs8UTE7s5tAW8vYglMmCg2Ep3x2IztIE",
   authDomain: "fiche-entretien-reso.firebaseapp.com",
@@ -576,7 +668,7 @@ window.renderPhotosGrid = renderPhotosGrid;
 
 window.onPhotosSelected = async function(input) {
   const immat = document.getElementById('immat').value.trim().toUpperCase();
-  if (!immat) { showToast('⚠ Saisis d\'abord l\'immatriculation'); input.value = ''; return; }
+  if (!immat) { showToast('Saisis d\'abord l\'immatriculation'); input.value = ''; return; }
   if (!input.files.length) return;
   const key = immat.replace(/[^A-Z0-9]/g,'');
   const fn = window._firestoreFns;
@@ -589,7 +681,7 @@ window.onPhotosSelected = async function(input) {
     const existing = snap.exists() ? (snap.data().photos || []) : [];
 
     if (existing.length >= 6) {
-      showToast('⚠ Maximum 6 photos par véhicule');
+      showToast('Maximum 6 photos par véhicule');
       loading.style.display = 'none'; input.value = ''; return;
     }
 
@@ -610,7 +702,7 @@ window.onPhotosSelected = async function(input) {
       updatedAt: fn.serverTimestamp()
     });
     renderPhotosGrid(allPhotos);
-    showToast(`✓ ${newPhotos.length} photo${newPhotos.length>1?'s':''} ajoutée${newPhotos.length>1?'s':''}`);
+    showToast(`${newPhotos.length} photo${newPhotos.length>1?'s':''} ajoutée${newPhotos.length>1?'s':''}`);
   } catch(e) { showToast('Erreur : ' + e.message); console.error(e); }
   finally { loading.style.display = 'none'; input.value = ''; }
 };
@@ -705,7 +797,7 @@ function renderCTAlerts(fiches) {
       const rougeSeuil = isHandicap ? 90 : 0;
       const shouldAlert = diff < 0 || diff <= orangeSeuil;
       if (!shouldAlert) return;
-      const labels = {carteHandicapExp:'♿ Carte Handicap', carteStationnementExp:'🅿 Carte Stationnement', assuranceExp:'🛡 Assurance'};
+      const labels = {carteHandicapExp:'Carte Handicap', carteStationnementExp:'Carte Stationnement', assuranceExp:'Assurance'};
       const type = diff < 0 ? 'expired' : diff <= rougeSeuil ? 'urgent' : 'soon';
       const msg = diff < 0 ? `Expirée depuis ${Math.abs(diff)}j` : `Expire dans ${diff}j`;
       carteAlerts.push({ immat: info.immat || key, label: labels[field], type, msg, date: info[field] });
@@ -719,7 +811,7 @@ function renderCTAlerts(fiches) {
 
   const banner = document.getElementById('ct-alerts-banner');
   if (!alerts.length && !carteAlerts.length) { banner.innerHTML=''; return; }
-  const icons = {expired:'🚨',urgent:'⚠️',soon:'📅'};
+  const icons = {expired:'',urgent:'',soon:''};
   const ctHtml = alerts.length ? `<div style="font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">Contrôles techniques</div>${alerts.map(a=>`<div class="ct-alert-item ${a.status.type}"><span class="ct-alert-icon">${icons[a.status.type]}</span><div class="ct-alert-text"><div class="ct-alert-immat">${a.fiche.immat}</div><div class="ct-alert-detail">CT prochain : ${formatDate(a.fiche.ctProchain)} — ${a.status.label}</div></div></div>`).join('')}` : '';
   const carteHtml = carteAlerts.length ? `<div style="font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin:${alerts.length?'12px':0} 0 8px;">Cartes véhicules</div>${carteAlerts.map(a=>`<div class="ct-alert-item ${a.type}"><span class="ct-alert-icon">${icons[a.type]}</span><div class="ct-alert-text"><div class="ct-alert-immat">${a.immat}</div><div class="ct-alert-detail">${a.label} — ${a.msg} (${formatDate(a.date)})</div></div></div>`).join('')}` : '';
   banner.innerHTML = ctHtml + carteHtml;
@@ -771,15 +863,15 @@ function renderHistorique(fiches) {
   if (currentFilter==='nok') filtered=filtered.filter(f=>Object.values(f.controles||{}).some(v=>v==='nok'||v==='warn'));
   else if (currentFilter==='ce-mois') { const n=new Date(); filtered=filtered.filter(f=>{if(!f.date)return false;const d=new Date(f.date);return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}); }
   if (currentSearch) filtered=filtered.filter(f=>f.immat&&f.immat.replace(/[-\s]/g,'').includes(currentSearch.replace(/[-\s]/g,'')));
-  if (!filtered.length) { container.innerHTML=currentSearch?`<div class="no-result">Aucun véhicule pour "<strong>${currentSearch}</strong>"</div>`:`<div class="empty-state"><div class="empty-state-icon">🔍</div><h3>Aucune fiche</h3><p>Aucune fiche pour ce filtre.</p></div>`; return; }
+  if (!filtered.length) { container.innerHTML=currentSearch?`<div class="no-result">Aucun véhicule pour "<strong>${currentSearch}</strong>"</div>`:`<div class="empty-state"><div class="empty-state-icon"></div><h3>Aucune fiche</h3><p>Aucune fiche pour ce filtre.</p></div>`; return; }
   const itemHtml = (f) => {
     const nA=Object.values(f.controles||{}).filter(v=>v==='nok'||v==='warn').length;
     const ct=ctStatus(f.ctProchain);
-    const ctB=ct?(ct.type==='expired'?`<span class="badge badge-ct">🚨 CT expiré</span>`:ct.type==='urgent'?`<span class="badge badge-warn">⚠ CT ${ct.days}j</span>`:`<span class="badge" style="background:var(--surface2);color:var(--text2)">📅 CT ${ct.days}j</span>`):'';
-    const aB=nA>0?`<span class="badge badge-warn">⚠ ${nA} alerte${nA>1?'s':''}</span>`:`<span class="badge badge-ok">✓ OK</span>`;
+    const ctB=ct?(ct.type==='expired'?`<span class="badge badge-ct">CT expiré</span>`:ct.type==='urgent'?`<span class="badge badge-warn">CT ${ct.days}j</span>`:`<span class="badge" style="background:var(--surface2);color:var(--text2)">CT ${ct.days}j</span>`):'';
+    const aB=nA>0?`<span class="badge badge-warn">${nA} alerte${nA>1?'s':''}</span>`:`<span class="badge badge-ok">OK</span>`;
     return `<div class="historique-item" onclick="showFicheDetail('${f.id}')">
       <div class="historique-immat">${highlightText(f.immat,currentSearch)}</div>
-      <div class="historique-meta"><span>📅 ${formatDate(f.date)}</span><span>🛣 ${f.km?.toLocaleString('fr-FR')} km</span>${f.controleur?`<span>👤 ${f.controleur}</span>`:''}</div>
+      <div class="historique-meta"><span>Date : ${formatDate(f.date)}</span><span>${f.km?.toLocaleString('fr-FR')} km</span>${f.controleur?`<span>${f.controleur}</span>`:''}</div>
       <div style="margin-top:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${aB}${ctB}<span style="margin-left:auto;font-size:12px;color:var(--text3);">Voir ›</span></div>
     </div>`;
   };
@@ -973,7 +1065,7 @@ window.saveCarInfo = async function(key) {
       carteStationnementExp: carteStationnementExp || null,
       assurance: assurance || null
     };
-    showToast('✓ Informations voiture enregistrées');
+    showToast('Informations voiture enregistrées');
   } catch(e) {
     showToast('Erreur enregistrement : ' + e.message);
     console.error(e);
@@ -983,10 +1075,10 @@ window.saveCarInfo = async function(key) {
 /* ========== DETAIL MODAL ========== */
 window.showFicheDetail = async function(id) {
   const fiche = allFiches.find(f=>f.id===id); if(!fiche) return;
-  const si={ok:`<span style="color:var(--green)">✓ OK</span>`,warn:`<span style="color:var(--orange)">⚠ À surveiller</span>`,nok:`<span style="color:var(--red)">✗ NOK</span>`};
+  const si={ok:`<span style="color:var(--green)">OK</span>`,warn:`<span style="color:var(--orange)">À surveiller</span>`,nok:`<span style="color:var(--red)">NOK</span>`};
   const lignes=Object.entries(fiche.controles||{}).map(([k,v])=>`<div class="detail-row"><span class="detail-key">${k}</span><span class="detail-value">${si[v]||'<span style="color:var(--text3)">—</span>'}</span></div>`).join('');
   const ct=ctStatus(fiche.ctProchain);
-  const ctBI=ct?`<span class="ct-warning-inline ${ct.type}">${ct.type==='expired'?'🚨':ct.type==='urgent'?'⚠️':'📅'} ${ct.label}</span>`:'';
+  const ctBI=ct?`<span class="ct-warning-inline ${ct.type}">${ct.label}</span>`:'';
 
   // Charger données véhicule
   const key = fiche.immat.replace(/[^A-Z0-9]/g,'');
@@ -997,7 +1089,7 @@ window.showFicheDetail = async function(id) {
     if(snap.exists()) vehicleData=snap.data();
   } catch(e){}
 
-  const etatLabels={bon:'✓ Bon état',moyen:'~ État moyen',mauvais:'✗ Mauvais état'};
+  const etatLabels={bon:'Bon état',moyen:'État moyen',mauvais:'Mauvais état'};
   const etatClass={bon:'bon',moyen:'moyen',mauvais:'mauvais'};
   const etatSection = vehicleData?.etatGeneral ? `
     <div class="detail-section"><div class="detail-section-title">État général</div>
@@ -1011,15 +1103,15 @@ window.showFicheDetail = async function(id) {
     if (!dateStr) return `<span style="color:var(--text3)">—</span>`;
     const d = new Date(dateStr); d.setHours(0,0,0,0);
     const diff = Math.round((d - today2) / 86400000);
-    if (diff < 0) return `${formatDate(dateStr)} <span class="ct-warning-inline expired">🚨 Expirée</span>`;
-    if (diff <= 30) return `${formatDate(dateStr)} <span class="ct-warning-inline urgent">⚠ ${diff}j</span>`;
+    if (diff < 0) return `${formatDate(dateStr)} <span class="ct-warning-inline expired">Expirée</span>`;
+    if (diff <= 30) return `${formatDate(dateStr)} <span class="ct-warning-inline urgent">${diff}j</span>`;
     return formatDate(dateStr);
   };
   const cartesSection = (vehicleData?.carteHandicapExp || vehicleData?.carteStationnementExp || vehicleData?.assurance) ? `
     <div class="detail-section"><div class="detail-section-title">Cartes & Assurance</div>
-      <div class="detail-row"><span class="detail-key">♿ Carte Handicap</span><span class="detail-value">${carteAlertBadge(vehicleData.carteHandicapExp)}</span></div>
-      <div class="detail-row"><span class="detail-key">🅿 Carte Stationnement</span><span class="detail-value">${carteAlertBadge(vehicleData.carteStationnementExp)}</span></div>
-      <div class="detail-row"><span class="detail-key">🛡 Assurance</span><span class="detail-value">${vehicleData.assurance || '—'}</span></div>
+      <div class="detail-row"><span class="detail-key">Carte Handicap</span><span class="detail-value">${carteAlertBadge(vehicleData.carteHandicapExp)}</span></div>
+      <div class="detail-row"><span class="detail-key">Carte Stationnement</span><span class="detail-value">${carteAlertBadge(vehicleData.carteStationnementExp)}</span></div>
+      <div class="detail-row"><span class="detail-key">Assurance</span><span class="detail-value">${vehicleData.assurance || '—'}</span></div>
     </div>` : '';
 
   const photosSection = vehicleData?.photos?.length ? `
@@ -1055,9 +1147,9 @@ window.showFicheDetail = async function(id) {
     </div>
     ${fiche.obsGenerales?`<div class="detail-section"><div class="detail-section-title">Observations générales</div><p style="font-size:14px;line-height:1.6;color:var(--text2);">${fiche.obsGenerales}</p></div>`:''}
     <div style="display:flex;gap:8px;margin-top:16px;">
-      <button class="btn-secondary" style="flex:1;" onclick="envoyerEmail(window._allFiches.find(f=>f.id==='${id}'))">📧 Email</button>
-      <button class="btn-secondary" onclick="modifierFiche('${id}')" style="background:var(--accent-light);color:var(--accent);border-color:var(--accent);">✏️ Modifier</button>
-      <button class="btn-danger" onclick="supprimerFiche('${id}')">🗑</button>
+      <button class="btn-secondary" style="flex:1;" onclick="envoyerEmail(window._allFiches.find(f=>f.id==='${id}'))">Email</button>
+      <button class="btn-secondary" onclick="modifierFiche('${id}')" style="background:var(--accent-light);color:var(--accent);border-color:var(--accent);">Modifier</button>
+      <button class="btn-danger" onclick="supprimerFiche('${id}')">Supprimer</button>
     </div>`;
   document.getElementById('modalOverlay').classList.add('open');
 };
@@ -1101,7 +1193,7 @@ window.modifierFiche = function(id) {
   window._editingId = id;
   // Changer le bouton
   const btn = document.getElementById('submitBtn');
-  btn.textContent = '💾 Mettre à jour la fiche';
+  btn.textContent = 'Mettre à jour la fiche';
   btn.style.background = 'var(--green)';
   // Bandeau mode édition
   let banner = document.getElementById('editBanner');
@@ -1109,10 +1201,10 @@ window.modifierFiche = function(id) {
     banner = document.createElement('div');
     banner.id = 'editBanner';
     banner.style.cssText = 'background:var(--orange-bg);border:1px solid var(--orange);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--orange);font-weight:500;display:flex;align-items:center;justify-content:space-between;';
-    banner.innerHTML = `<span>✏️ Mode édition — fiche ${fiche.immat}</span><button onclick="annulerEdition()" style="background:none;border:none;color:var(--orange);font-size:13px;font-weight:600;cursor:pointer;">Annuler</button>`;
+    banner.innerHTML = `<span>Mode édition — fiche ${fiche.immat}</span><button onclick="annulerEdition()" style="background:none;border:none;color:var(--orange);font-size:13px;font-weight:600;cursor:pointer;">Annuler</button>`;
     document.getElementById('view-nouvelle').insertBefore(banner, document.getElementById('view-nouvelle').firstChild);
   } else {
-    banner.querySelector('span').textContent = `✏️ Mode édition — fiche ${fiche.immat}`;
+    banner.querySelector('span').textContent = `Mode édition — fiche ${fiche.immat}`;
     banner.style.display = 'flex';
   }
   window.scrollTo(0,0);
@@ -1135,7 +1227,7 @@ window.enregistrerFiche = async function() {
   const immat=document.getElementById('immat').value.trim().toUpperCase();
   const km=document.getElementById('km').value;
   const date=document.getElementById('date').value;
-  if(!immat||!km||!date){showToast('⚠ Remplis immatriculation, KM et date');return;}
+  if(!immat||!km||!date){showToast('Remplis immatriculation, KM et date');return;}
   const controles={};
   document.querySelectorAll('.controle-item').forEach(item=>{const a=item.querySelector('.status-btn.ok,.status-btn.warn,.status-btn.nok');controles[item.dataset.key]=a?a.dataset.status:null;});
   const fn=window._firestoreFns;
@@ -1165,7 +1257,7 @@ window.enregistrerFiche = async function() {
       // Mode édition — on met à jour le document existant
       await fn.setDoc(fn.doc(db,'fiches-entretien',window._editingId), { ...ficheData, updatedAt: fn.serverTimestamp() }, { merge: true });
       await saveVehicleData(immat);
-      showToast('✓ Fiche mise à jour');
+      showToast('Fiche mise à jour');
       window._editingId = null;
       const banner = document.getElementById('editBanner');
       if(banner) banner.style.display='none';
@@ -1173,7 +1265,7 @@ window.enregistrerFiche = async function() {
       // Nouvelle fiche
       await fn.addDoc(fn.collection(db,'fiches-entretien'), { ...ficheData, createdAt: fn.serverTimestamp() });
       await saveVehicleData(immat);
-      showToast('✓ Fiche enregistrée');
+      showToast('Fiche enregistrée');
     }
     resetForm();
   } catch(e){showToast('Erreur : '+e.message);}
@@ -1186,7 +1278,7 @@ window.enregistrerFiche = async function() {
 
 window.supprimerFiche=async function(id){if(!confirm('Supprimer cette fiche ?'))return;try{await window._firestoreFns.deleteDoc(window._firestoreFns.doc(db,'fiches-entretien',id));closeModal();showToast('Fiche supprimée');}catch(e){showToast('Erreur suppression');}};
 
-window.envoyerEmail=function(fiche){if(!fiche)return;const sl={ok:'✓ OK',warn:'⚠ À surveiller',nok:'✗ NOK'};const lignes=Object.entries(fiche.controles||{}).map(([k,v])=>`${k}: ${sl[v]||'Non vérifié'}`).join('\n');const ct=ctStatus(fiche.ctProchain);const ctN=ct?`\n⚠ ATTENTION : ${ct.label}`:'';const body=`FICHE D'ENTRETIEN\n=================\nVéhicule: ${fiche.immat}\nKilométrage: ${fiche.km?.toLocaleString('fr-FR')} km\nDate: ${formatDate(fiche.date)}\nContrôlé par: ${fiche.controleur||'-'}\n\nCONTRÔLE TECHNIQUE\nDernier: ${fiche.ctDate?formatDate(fiche.ctDate):'-'}\nProchain: ${fiche.ctProchain?formatDate(fiche.ctProchain):'-'}${ctN}\nProchaine vidange: ${fiche.vidangeProchaine?formatDate(fiche.vidangeProchaine):'-'}\n\nPROPRETE\nIntérieur: ${fiche.propreteInterieur||'-'}\nExtérieur: ${fiche.propreteExterieur||'-'}\n${fiche.obsPropreter?'Obs: '+fiche.obsPropreter:''}\n\nCONTRÔLES\n${lignes}\n${fiche.obsControles?'Obs: '+fiche.obsControles:''}\n\nOBSERVATIONS GÉNÉRALES\n${fiche.obsGenerales||'Aucune'}`;window.location.href=`mailto:?subject=Fiche entretien ${fiche.immat} - ${formatDate(fiche.date)}&body=${encodeURIComponent(body)}`;};
+window.envoyerEmail=function(fiche){if(!fiche)return;const sl={ok:'OK',warn:'À surveiller',nok:'NOK'};const lignes=Object.entries(fiche.controles||{}).map(([k,v])=>`${k}: ${sl[v]||'Non vérifié'}`).join('\n');const ct=ctStatus(fiche.ctProchain);const ctN=ct?`\nATTENTION : ${ct.label}`:'';const body=`FICHE D'ENTRETIEN\n=================\nVéhicule: ${fiche.immat}\nKilométrage: ${fiche.km?.toLocaleString('fr-FR')} km\nDate: ${formatDate(fiche.date)}\nContrôlé par: ${fiche.controleur||'-'}\n\nCONTRÔLE TECHNIQUE\nDernier: ${fiche.ctDate?formatDate(fiche.ctDate):'-'}\nProchain: ${fiche.ctProchain?formatDate(fiche.ctProchain):'-'}${ctN}\nProchaine vidange: ${fiche.vidangeProchaine?formatDate(fiche.vidangeProchaine):'-'}\n\nPROPRETE\nIntérieur: ${fiche.propreteInterieur||'-'}\nExtérieur: ${fiche.propreteExterieur||'-'}\n${fiche.obsPropreter?'Obs: '+fiche.obsPropreter:''}\n\nCONTRÔLES\n${lignes}\n${fiche.obsControles?'Obs: '+fiche.obsControles:''}\n\nOBSERVATIONS GÉNÉRALES\n${fiche.obsGenerales||'Aucune'}`;window.location.href=`mailto:?subject=Fiche entretien ${fiche.immat} - ${formatDate(fiche.date)}&body=${encodeURIComponent(body)}`;};
 
 // Masquer le loading après 8s max si Firebase tarde, mais sans passer hors ligne
 setTimeout(()=>{document.getElementById('loadingOverlay').style.display='none';},8000);
@@ -1200,7 +1292,7 @@ window._propreteState=propreteState;
 let immatDebounceTimer=null;
 
 /* THEME */
-function applyTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);document.getElementById('themeToggle').textContent=t==='dark'?'☀️':'🌙';}
+function applyTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);const b=document.getElementById('themeToggle');b.textContent='';b.setAttribute('aria-label',t==='dark'?'Activer le thème clair':'Activer le thème sombre');}
 function toggleTheme(){applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');}
 window.toggleTheme=toggleTheme;
 const saved=localStorage.getItem('theme');
@@ -1234,7 +1326,7 @@ function renderPhotosGrid(photos) {
   if (!grid) return;
   const count = (photos||[]).length;
   const thumbs = (photos||[]).map((p,i) => `<div class="photo-thumb"><img src="${p.data}" alt="Photo ${i+1}" onclick="openLightbox('${p.data}','Photo ${i+1}')"><button class="del-btn" onclick="deletePhoto('${p.id}')">✕</button></div>`).join('');
-  const addBtn = count < 6 ? `<button class="photo-add-btn" onclick="document.getElementById('photoInput').click()"><span>📷</span><small>${count > 0 ? 'Ajouter' : 'Photo'}</small></button>` : '';
+  const addBtn = count < 6 ? `<button class="photo-add-btn" onclick="document.getElementById('photoInput').click()"><span></span><small>${count > 0 ? 'Ajouter' : 'Photo'}</small></button>` : '';
   grid.innerHTML = thumbs + addBtn;
   // Mettre à jour le label
   const label = grid.previousElementSibling;
@@ -1246,7 +1338,7 @@ function renderPhotosGrid(photos) {
 window.renderPhotosGrid = renderPhotosGrid;
 
 /* CONTROLES */
-function buildControles(){document.getElementById('controles-list').innerHTML=CONTROLES_ITEMS.map(nom=>`<div class="controle-item" data-key="${nom}"><span class="controle-label">${nom}</span><div class="controle-status"><button class="status-btn" data-status="ok" onclick="setControle(this)">✓</button><button class="status-btn" data-status="warn" onclick="setControle(this)">~</button><button class="status-btn" data-status="nok" onclick="setControle(this)">✗</button></div></div>`).join('');}
+function buildControles(){document.getElementById('controles-list').innerHTML=CONTROLES_ITEMS.map(nom=>`<div class="controle-item" data-key="${nom}"><span class="controle-label">${nom}</span><div class="controle-status"><button class="status-btn" data-status="ok" onclick="setControle(this)">OK</button><button class="status-btn" data-status="warn" onclick="setControle(this)">~</button><button class="status-btn" data-status="nok" onclick="setControle(this)">NOK</button></div></div>`).join('');}
 function setControle(btn){btn.closest('.controle-item').querySelectorAll('.status-btn').forEach(b=>b.classList.remove('ok','warn','nok'));btn.classList.add(btn.dataset.status);}
 window.setControle=setControle;
 
