@@ -498,9 +498,11 @@ try {
   setSyncStatus('connected');
 
   const q = query(collection(db, 'fiches-entretien'), orderBy('createdAt', 'desc'));
-  onSnapshot(q, snap => {
+  onSnapshot(q, async snap => {
     allFiches = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     window._allFiches = allFiches;
+    // Charger TOUS les véhicules au démarrage pour que les alertes fonctionnent partout
+    await preloadAllVehicleInfo(allFiches);
     renderAll();
     document.getElementById('loadingOverlay').style.display = 'none';
   });
@@ -670,8 +672,8 @@ function ctStatus(ctProchain) {
   const ct = new Date(ctProchain); ct.setHours(0,0,0,0);
   const d = Math.round((ct - now) / 86400000);
   if (d < 0) return { type:'expired', days:Math.abs(d), label:`Expiré depuis ${Math.abs(d)} jour${Math.abs(d)>1?'s':''}` };
-  if (d <= 7) return { type:'urgent', days:d, label:`Expire dans ${d} jour${d>1?'s':''}` };
-  if (d <= 30) return { type:'soon', days:d, label:`Dans ${d} jours` };
+  if (d === 0) return { type:'soon', days:d, label:'Aujourd\'hui' };
+  if (d <= 30) return { type:'soon', days:d, label:`Dans ${d} jour${d>1?'s':''}` };
   return null;
 }
 window.ctStatus = ctStatus;
@@ -718,7 +720,7 @@ function renderCTAlerts(fiches) {
   const banner = document.getElementById('ct-alerts-banner');
   if (!alerts.length && !carteAlerts.length) { banner.innerHTML=''; return; }
   const icons = {expired:'🚨',urgent:'⚠️',soon:'📅'};
-  const ctHtml = alerts.length ? `<div style="font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">Contrôles techniques</div>${alerts.slice(0,5).map(a=>`<div class="ct-alert-item ${a.status.type}"><span class="ct-alert-icon">${icons[a.status.type]}</span><div class="ct-alert-text"><div class="ct-alert-immat">${a.fiche.immat}</div><div class="ct-alert-detail">CT prochain : ${formatDate(a.fiche.ctProchain)} — ${a.status.label}</div></div></div>`).join('')}` : '';
+  const ctHtml = alerts.length ? `<div style="font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">Contrôles techniques</div>${alerts.map(a=>`<div class="ct-alert-item ${a.status.type}"><span class="ct-alert-icon">${icons[a.status.type]}</span><div class="ct-alert-text"><div class="ct-alert-immat">${a.fiche.immat}</div><div class="ct-alert-detail">CT prochain : ${formatDate(a.fiche.ctProchain)} — ${a.status.label}</div></div></div>`).join('')}` : '';
   const carteHtml = carteAlerts.length ? `<div style="font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);margin:${alerts.length?'12px':0} 0 8px;">Cartes véhicules</div>${carteAlerts.map(a=>`<div class="ct-alert-item ${a.type}"><span class="ct-alert-icon">${icons[a.type]}</span><div class="ct-alert-text"><div class="ct-alert-immat">${a.immat}</div><div class="ct-alert-detail">${a.label} — ${a.msg} (${formatDate(a.date)})</div></div></div>`).join('')}` : '';
   banner.innerHTML = ctHtml + carteHtml;
 }
@@ -821,6 +823,22 @@ function getLatestVehicleRows(fiches) {
     if (!rows[key] || (f.date || '') > (rows[key].date || '')) rows[key] = f;
   });
   return Object.entries(rows).map(([key, fiche]) => ({ key, fiche })).sort((a,b)=>a.fiche.immat.localeCompare(b.fiche.immat));
+}
+
+// Charge tous les véhicules au démarrage pour que les alertes soient disponibles partout
+async function preloadAllVehicleInfo(fiches) {
+  const fn = window._firestoreFns;
+  if (!fn || !db) return;
+  const rows = getLatestVehicleRows(fiches);
+  await Promise.all(rows.map(async ({key}) => {
+    if (vehicleInfoCache[key]) return; // déjà en cache
+    try {
+      const snap = await fn.getDoc(fn.doc(db, 'vehicules', key));
+      vehicleInfoCache[key] = snap.exists() ? snap.data() : {};
+    } catch(e) {
+      vehicleInfoCache[key] = {};
+    }
+  }));
 }
 
 async function ensureVehicleInfoLoaded(rows) {
