@@ -423,9 +423,15 @@
           <input class="field-input" type="date" id="ct-prochain">
         </div>
       </div>
-      <div class="field-group">
-        <label class="field-label">Prochaine vidange</label>
-        <input class="field-input" type="date" id="vidange-prochaine">
+      <div class="row-2">
+        <div class="field-group">
+          <label class="field-label">Prochaine vidange (date)</label>
+          <input class="field-input" type="date" id="vidange-prochaine">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Prochaine vidange (km)</label>
+          <input class="field-input" type="number" id="vidange-prochaine-km" placeholder="ex: 60 000">
+        </div>
       </div>
     </div>
   </div>
@@ -1135,7 +1141,7 @@ window.showFicheDetail = async function(id) {
     ${(fiche.ctDate||fiche.ctProchain||fiche.vidangeProchaine)?`<div class="detail-section"><div class="detail-section-title">Contrôle technique</div>
       ${fiche.ctDate?`<div class="detail-row"><span class="detail-key">Dernier CT</span><span class="detail-value">${formatDate(fiche.ctDate)}</span></div>`:''}
       ${fiche.ctProchain?`<div class="detail-row"><span class="detail-key">Prochain CT</span><span class="detail-value" style="display:flex;align-items:center;gap:4px;justify-content:flex-end;flex-wrap:wrap;">${formatDate(fiche.ctProchain)}${ctBI}</span></div>`:''}
-      ${fiche.vidangeProchaine?`<div class="detail-row"><span class="detail-key">Prochaine vidange</span><span class="detail-value">${formatDate(fiche.vidangeProchaine)}</span></div>`:''}
+      ${fiche.vidangeProchaine?`<div class="detail-row"><span class="detail-key">Prochaine vidange</span><span class="detail-value">${formatDate(fiche.vidangeProchaine)}${fiche.vidangeProchaineKm ? ' · ' + fiche.vidangeProchaineKm.toLocaleString('fr-FR') + ' km' : ''}</span></div>`:''}
     </div>`:''}
     <div class="detail-section"><div class="detail-section-title">Propreté</div>
       <div class="detail-row"><span class="detail-key">Intérieur</span><span class="detail-value">${fiche.propreteInterieur||'—'}</span></div>
@@ -1169,6 +1175,7 @@ window.modifierFiche = function(id) {
   document.getElementById('ct-date').value = fiche.ctDate || '';
   document.getElementById('ct-prochain').value = fiche.ctProchain || '';
   document.getElementById('vidange-prochaine').value = fiche.vidangeProchaine || '';
+  document.getElementById('vidange-prochaine-km').value = fiche.vidangeProchaineKm || '';
   document.getElementById('obs-proprete').value = fiche.obsPropreter || '';
   document.getElementById('obs-controles').value = fiche.obsControles || '';
   document.getElementById('obs-generales').value = fiche.obsGenerales || '';
@@ -1244,6 +1251,7 @@ window.enregistrerFiche = async function() {
     ctDate:document.getElementById('ct-date').value||null,
     ctProchain:document.getElementById('ct-prochain').value||null,
     vidangeProchaine:document.getElementById('vidange-prochaine').value||null,
+    vidangeProchaineKm:document.getElementById('vidange-prochaine-km').value ? parseInt(document.getElementById('vidange-prochaine-km').value) : null,
     propreteInterieur:window._propreteState?.interieur||null,
     propreteExterieur:window._propreteState?.exterieur||null,
     obsPropreter:document.getElementById('obs-proprete').value||null,
@@ -1278,7 +1286,7 @@ window.enregistrerFiche = async function() {
 
 window.supprimerFiche=async function(id){if(!confirm('Supprimer cette fiche ?'))return;try{await window._firestoreFns.deleteDoc(window._firestoreFns.doc(db,'fiches-entretien',id));closeModal();showToast('Fiche supprimée');}catch(e){showToast('Erreur suppression');}};
 
-window.envoyerEmail=function(fiche){if(!fiche)return;const sl={ok:'OK',warn:'À surveiller',nok:'NOK'};const lignes=Object.entries(fiche.controles||{}).map(([k,v])=>`${k}: ${sl[v]||'Non vérifié'}`).join('\n');const ct=ctStatus(fiche.ctProchain);const ctN=ct?`\nATTENTION : ${ct.label}`:'';const body=`FICHE D'ENTRETIEN\n=================\nVéhicule: ${fiche.immat}\nKilométrage: ${fiche.km?.toLocaleString('fr-FR')} km\nDate: ${formatDate(fiche.date)}\nContrôlé par: ${fiche.controleur||'-'}\n\nCONTRÔLE TECHNIQUE\nDernier: ${fiche.ctDate?formatDate(fiche.ctDate):'-'}\nProchain: ${fiche.ctProchain?formatDate(fiche.ctProchain):'-'}${ctN}\nProchaine vidange: ${fiche.vidangeProchaine?formatDate(fiche.vidangeProchaine):'-'}\n\nPROPRETE\nIntérieur: ${fiche.propreteInterieur||'-'}\nExtérieur: ${fiche.propreteExterieur||'-'}\n${fiche.obsPropreter?'Obs: '+fiche.obsPropreter:''}\n\nCONTRÔLES\n${lignes}\n${fiche.obsControles?'Obs: '+fiche.obsControles:''}\n\nOBSERVATIONS GÉNÉRALES\n${fiche.obsGenerales||'Aucune'}`;window.location.href=`mailto:?subject=Fiche entretien ${fiche.immat} - ${formatDate(fiche.date)}&body=${encodeURIComponent(body)}`;};
+window.envoyerEmail=function(fiche){if(!fiche)return;const sl={ok:'OK',warn:'À surveiller',nok:'NOK'};const lignes=Object.entries(fiche.controles||{}).map(([k,v])=>`${k}: ${sl[v]||'Non vérifié'}`).join('\n');const ct=ctStatus(fiche.ctProchain);const ctN=ct?`\nATTENTION : ${ct.label}`:'';const body=`FICHE D'ENTRETIEN\n=================\nVéhicule: ${fiche.immat}\nKilométrage: ${fiche.km?.toLocaleString('fr-FR')} km\nDate: ${formatDate(fiche.date)}\nContrôlé par: ${fiche.controleur||'-'}\n\nCONTRÔLE TECHNIQUE\nDernier: ${fiche.ctDate?formatDate(fiche.ctDate):'-'}\nProchain: ${fiche.ctProchain?formatDate(fiche.ctProchain):'-'}${ctN}\nProchaine vidange: ${fiche.vidangeProchaine?formatDate(fiche.vidangeProchaine):'-'}${fiche.vidangeProchaineKm?' / '+fiche.vidangeProchaineKm.toLocaleString('fr-FR')+' km':''}\n\nPROPRETE\nIntérieur: ${fiche.propreteInterieur||'-'}\nExtérieur: ${fiche.propreteExterieur||'-'}\n${fiche.obsPropreter?'Obs: '+fiche.obsPropreter:''}\n\nCONTRÔLES\n${lignes}\n${fiche.obsControles?'Obs: '+fiche.obsControles:''}\n\nOBSERVATIONS GÉNÉRALES\n${fiche.obsGenerales||'Aucune'}`;window.location.href=`mailto:?subject=Fiche entretien ${fiche.immat} - ${formatDate(fiche.date)}&body=${encodeURIComponent(body)}`;};
 
 // Masquer le loading après 8s max si Firebase tarde, mais sans passer hors ligne
 setTimeout(()=>{document.getElementById('loadingOverlay').style.display='none';},8000);
@@ -1347,7 +1355,7 @@ window.setProprete=setProprete;
 
 /* RESET — ne touche PAS à l'état général ni aux photos (ils sont persistants) */
 function resetForm(){
-  ['immat','km','controleur','ct-date','ct-prochain','vidange-prochaine','obs-proprete','obs-controles','obs-generales'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['immat','km','controleur','ct-date','ct-prochain','vidange-prochaine','vidange-prochaine-km','obs-proprete','obs-controles','obs-generales'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('date').value=new Date().toISOString().split('T')[0];
   document.querySelectorAll('.proprete-btn').forEach(b=>b.classList.remove('selected-bon','selected-moyen','selected-mauvais'));
   propreteState.interieur=null;propreteState.exterieur=null;
